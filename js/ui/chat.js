@@ -18,11 +18,10 @@ export function initChat(ctxProvider) {
   const renderStatus = () => {
     status.textContent = LLM.hasKey()
       ? "AI mentor connected (DeepSeek) — answers come from the model."
-      : "Offline mentor mode — add your DeepSeek API key in Settings for full AI answers.";
+      : "Built-in mentor — add your DeepSeek key in js/config.js to enable live AI answers.";
     status.className = "chat-status " + (LLM.hasKey() ? "on" : "off");
   };
   renderStatus();
-  window.addEventListener("acc:key-changed", renderStatus);
 
   const history = store.getChat();
   if (history.length === 0) {
@@ -46,7 +45,7 @@ export function initChat(ctxProvider) {
     push({ role: "user", content: text });
     const typing = document.createElement("div");
     typing.className = "msg assistant typing";
-    typing.innerHTML = '<div class="msg-bubble">Thinking<span class="dots">…</span></div>';
+    typing.innerHTML = '<div class="msg-bubble">Thinking<span class="dots"><i></i><i></i><i></i></span></div>';
     log.appendChild(typing);
     log.scrollTop = log.scrollHeight;
 
