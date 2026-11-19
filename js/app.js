@@ -137,4 +137,5 @@ function init() {
   if (state.roleId) generate();
 }
 
-if (document.readyState !== "loading") init(); else document.addEventListener("DOMContentLoaded", init);
+if (document.readyState !== "loading") init();
+else document.addEventListener("DOMContentLoaded", init);
