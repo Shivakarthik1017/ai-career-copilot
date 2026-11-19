@@ -28,11 +28,6 @@ export const store = {
   getChat: () => read("chat", []),
   saveChat: (msgs) => write("chat", msgs.slice(-40)),
   clearChat: () => write("chat", []),
-  // DeepSeek API key — stored ONLY in this browser, never sent anywhere
-  // except directly to api.deepseek.com when the user chats.
-  getApiKey: () => read("deepseekKey", ""),
-  saveApiKey: (k) => write("deepseekKey", (k || "").trim()),
-  clearApiKey: () => write("deepseekKey", ""),
   getStreak: () => read("streak", { count: 0, lastDate: null }),
   touchStreak: () => {
     const today = new Date().toISOString().slice(0, 10);

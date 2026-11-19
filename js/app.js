@@ -1,7 +1,8 @@
 // js/app.js — Bootstrap + state wiring.
 // Owns: profile state (role / year / known skills), roadmap generation,
-// progress checkboxes, streak, settings (DeepSeek key). Rendering lives
-// in js/ui/render.js; the mentor lives in js/ui/chat.js.
+// progress checkboxes, streak. Rendering lives in js/ui/render.js;
+// the mentor lives in js/ui/chat.js. No Settings/key panel: the DeepSeek
+// key (if any) lives in js/config.js, a local gitignored file.
 
 import { ROLES, getRole, ALL_SKILLS } from "./data/roles.js";
 import { COURSES } from "./data/courses.js";
@@ -60,6 +61,8 @@ function renderProgress() {
   $("progressBar").style.width = s.pct + "%";
   $("progressText").textContent = `${s.done} of ${s.total} months complete · ${s.pct}%`;
   $("streakText").textContent = `🔥 ${streak.count}-day streak — open the app daily to keep it going.`;
+  const hs = $("headerStreak");
+  if (hs) hs.textContent = `🔥 ${streak.count}-day streak`;
 }
 
 function renderRoadmap() {
@@ -103,36 +106,6 @@ function generate() {
   $("roadmapSection").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-function initSettings() {
-  const dlg = $("settingsDialog");
-  const keyInput = $("apiKeyInput");
-  const showBtn = $("settingsBtn");
-  const saveBtn = $("saveKeyBtn");
-  const clearBtn = $("clearKeyBtn");
-  const note = $("keyNote");
-  const refresh = () => {
-    keyInput.value = store.getApiKey();
-    note.textContent = store.getApiKey()
-      ? "Key saved in this browser only. It is sent only to api.deepseek.com when you chat — never to any other server."
-      : "No key saved yet. The app works fully without one, using the built-in mentor.";
-  };
-  showBtn.addEventListener("click", () => { refresh(); dlg.showModal(); });
-  saveBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    store.saveApiKey(keyInput.value);
-    window.dispatchEvent(new Event("acc:key-changed"));
-    refresh();
-    note.textContent = "Key saved. Close this panel and ask the mentor anything.";
-  });
-  clearBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    store.clearApiKey();
-    window.dispatchEvent(new Event("acc:key-changed"));
-    refresh();
-  });
-  dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
-}
-
 function init() {
   const saved = store.getProfile();
   if (saved) {
@@ -150,7 +123,6 @@ function init() {
   $("resetBtn").addEventListener("click", () => {
     state.roadmap = null; $("roadmapSection").hidden = true; window.scrollTo({ top: 0, behavior: "smooth" });
   });
-  initSettings();
   initChat(() => {
     if (!state.roadmap) return { roleTitle: "your chosen role", missing: [], nextStep: "Pick a role above and generate your roadmap first.", courses: COURSES.slice(0, 3) };
     return {
