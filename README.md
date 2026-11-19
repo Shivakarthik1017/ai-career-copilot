@@ -5,8 +5,7 @@ pick a target role, get a 6-month AI-powered career roadmap, see your skill
 gaps, ask an AI mentor, and apply to verified live opportunities — all free,
 with no login and no backend.
 
-> Project 2 for Pendyala Shivakarthik · Due 20 Nov 2026 · Built after
-> Project 1 (Student Opportunities Finder).
+
 
 ## What it does
 
