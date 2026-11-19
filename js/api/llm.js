@@ -12,12 +12,17 @@
 // "no key" and the built-in mentor takes over.
 
 let DEEPSEEK_API_KEY = "";
-try {
-  const cfg = await import("../config.js");
-  DEEPSEEK_API_KEY = cfg.DEEPSEEK_API_KEY || "";
-} catch {
-  // No local config file (e.g. the live GitHub Pages site) — built-in mentor.
+let keyLoadPromise = null;
+function loadKey() {
+  if (!keyLoadPromise) {
+    keyLoadPromise = import("../config.js")
+      .then((cfg) => { DEEPSEEK_API_KEY = cfg.DEEPSEEK_API_KEY || ""; })
+      .catch(() => { DEEPSEEK_API_KEY = ""; });
+  }
+  return keyLoadPromise;
 }
+// Start loading in the background, but never block module evaluation.
+loadKey();
 
 export const LLM = {
   endpoint: "https://api.deepseek.com/chat/completions",
@@ -30,6 +35,7 @@ export const LLM = {
     "Give short, structured answers: a direct answer, then 3-5 concrete next steps, then one small project to build. Keep answers under 250 words.",
 
   async chat(messages) {
+    await loadKey();
     const key = (DEEPSEEK_API_KEY || "").trim();
     if (!key) return { ok: false, error: "no-key" };
     try {
