@@ -1,16 +1,28 @@
 // js/api/llm.js — DeepSeek LLM client + rule-based fallback.
-// The API key is NEVER hardcoded. The user enters their own key in the
-// Settings panel; it is stored only in localStorage (see js/storage.js)
-// and sent only to https://api.deepseek.com — never to any other server.
-// If no key is set, or the API call fails, the app uses the built-in
-// rule-based mentor (fallbackAnswer), so the chat never shows a dead screen.
+// The API key lives ONLY in js/config.js (local file, gitignored — never
+// committed). It is sent only to https://api.deepseek.com — never to any
+// other server. If the key is empty, or the API call fails, the app uses
+// the built-in rule-based mentor (fallbackAnswer), so the chat never shows
+// a dead screen. There is NO key panel in the site UI.
+//
+// The config is loaded with a dynamic import on purpose: on the live site
+// js/config.js does not exist (it is never pushed), and a static import of
+// a missing file would fail the whole module graph and leave the app
+// blank. With the dynamic import + catch, a missing config just means
+// "no key" and the built-in mentor takes over.
 
-import { store } from "../storage.js";
+let DEEPSEEK_API_KEY = "";
+try {
+  const cfg = await import("../config.js");
+  DEEPSEEK_API_KEY = cfg.DEEPSEEK_API_KEY || "";
+} catch {
+  // No local config file (e.g. the live GitHub Pages site) — built-in mentor.
+}
 
 export const LLM = {
   endpoint: "https://api.deepseek.com/chat/completions",
   model: "deepseek-chat",
-  hasKey: () => Boolean(store.getApiKey()),
+  hasKey: () => Boolean((DEEPSEEK_API_KEY || "").trim()),
   systemPrompt:
     "You are an AI career mentor for Indian students. Be practical, honest and encouraging. " +
     "Recommend only free learning resources (Google Skills, IBM SkillsBuild, AWS Skill Builder, Microsoft Learn, NPTEL, Cisco Networking Academy, Infosys Springboard). " +
@@ -18,7 +30,7 @@ export const LLM = {
     "Give short, structured answers: a direct answer, then 3-5 concrete next steps, then one small project to build. Keep answers under 250 words.",
 
   async chat(messages) {
-    const key = store.getApiKey();
+    const key = (DEEPSEEK_API_KEY || "").trim();
     if (!key) return { ok: false, error: "no-key" };
     try {
       const res = await fetch(this.endpoint, {
@@ -76,12 +88,12 @@ export function fallbackAnswer(question, ctx = {}) {
   if (/(deadline|apply|when|scholarship|internship|job)/.test(q)) {
     return "Check the “Matched Opportunities” section below your roadmap — every deadline there was verified, with a countdown. Apply to the closest deadline first, and never wait for the last day: portals slow down and sometimes close early.\n\n" + next;
   }
-  return `Good question. For a ${role}, the honest path is: learn the missing skills in order, build one project a month, and apply while you learn — don't wait until you feel “ready”.\n\n${missing.length ? "Your biggest gaps right now: " + missing.slice(0, 4).join(", ") + ".\n\n" : ""}${next}\n\nTip: ask me something specific — “what course should I do first?”, “what project should I build?”, or “how do I prepare for interviews?” — and I'll give you a concrete plan. (Offline mentor mode: add your DeepSeek API key in Settings for full AI answers.)`;
+  return `Good question. For a ${role}, the honest path is: learn the missing skills in order, build one project a month, and apply while you learn — don't wait until you feel “ready”.\n\n${missing.length ? "Your biggest gaps right now: " + missing.slice(0, 4).join(", ") + ".\n\n" : ""}${next}\n\nTip: ask me something specific — “what course should I do first?”, “what project should I build?”, or “how do I prepare for interviews?” — and I'll give you a concrete plan. (Built-in mentor mode: add your DeepSeek key in js/config.js to enable live AI.)`;
 }
 
 export function errorMessage(err) {
-  if (err === "no-key") return "No DeepSeek key set — answering with the built-in mentor. Add your key in Settings for full AI answers.";
-  if (err === "bad-key") return "Your DeepSeek key was rejected (401). Check the key in Settings and try again. Answering with the built-in mentor meanwhile.";
+  if (err === "no-key") return "Built-in mentor — add your DeepSeek key in js/config.js to enable live AI answers.";
+  if (err === "bad-key") return "Your DeepSeek key in js/config.js was rejected (401). Check the key and try again. Answering with the built-in mentor meanwhile.";
   if (err === "network") return "Couldn't reach DeepSeek (network error). Answering with the built-in mentor meanwhile.";
   return "DeepSeek returned an error. Answering with the built-in mentor meanwhile.";
 }
