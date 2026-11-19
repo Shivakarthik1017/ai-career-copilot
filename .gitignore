@@ -1,0 +1,4 @@
+# Local-only files — never commit these.
+# js/config.js holds your DeepSeek API key. A key in a public repo can be
+# copied by anyone and used to spend your DeepSeek balance.
+js/config.js

@@ -5,32 +5,66 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Career Copilot — Learn With Shivakarthik</title>
 <meta name="description" content="AI Career Copilot for Indian students: pick a target role, get a month-by-month roadmap with verified free courses, skill-gap analysis, live opportunities and an AI mentor.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230f766e'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>A</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <header class="topbar">
   <div class="wrap topbar-inner">
-    <a class="brand" href="#">🤖 AI Career <span>Copilot</span></a>
-    <p class="brand-sub">Learn With Shivakarthik</p>
-    <button id="settingsBtn" class="btn btn-ghost" type="button">⚙️ Settings · DeepSeek key</button>
+    <a class="brand" href="#">
+      <span class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5 13.5 13.5 8.5 15.5 10.5 10.5Z"/></svg>
+      </span>
+      <span class="brand-text">AI Career <span>Copilot</span></span>
+      <span class="brand-tag">Learn With Shivakarthik</span>
+    </a>
+    <nav class="topnav" aria-label="Main">
+      <a href="#setup">Roadmaps</a>
+      <a href="#roadmapSection">My roadmap</a>
+      <a href="#chat">AI Mentor</a>
+      <a href="#how">How it works</a>
+    </nav>
+    <span class="streak-chip" id="headerStreak" title="Daily streak">🔥 0-day streak</span>
   </div>
 </header>
 
 <main class="wrap">
   <section class="hero">
-    <p class="eyebrow">FOR INDIAN STUDENTS · FREE · NO LOGIN</p>
-    <h1>Don't just search for jobs.<br><span class="accent">Become ready for them.</span></h1>
-    <p class="lede">Pick a target role, tell us what you already know, and get a 6-month AI-powered roadmap — free courses, one project a month, skill-gap analysis, and live opportunities with deadlines. Ask the AI mentor anything along the way.</p>
+    <div class="blob blob-teal" aria-hidden="true"></div>
+    <div class="blob blob-orange" aria-hidden="true"></div>
+    <div class="blob blob-peach" aria-hidden="true"></div>
+    <p class="eyebrow anim" style="--d:.05s">✦ FOR INDIAN STUDENTS · FREE · NO LOGIN</p>
+    <h1 class="anim" style="--d:.15s">Don't just search for jobs.<br><span class="grad">Become ready for them.</span></h1>
+    <p class="lede anim" style="--d:.25s">Pick a target role, tell us what you already know, and get a 6-month AI-powered roadmap — free courses, one project a month, skill-gap analysis, and live opportunities with deadlines. Ask the AI mentor anything along the way.</p>
+    <div class="hero-cta anim" style="--d:.35s">
+      <a class="btn btn-primary shine" href="#setup">Build my roadmap →</a>
+      <a class="btn btn-quiet" href="#chat">Ask the AI mentor</a>
+    </div>
     <div class="hero-stats">
-      <div><strong>8</strong><span>target roles</span></div>
-      <div><strong>13</strong><span>verified opportunities</span></div>
-      <div><strong>14</strong><span>verified free courses</span></div>
-      <div><strong>6</strong><span>months, step by step</span></div>
+      <div class="stat anim" style="--d:.45s"><strong>8</strong><span>target roles</span></div>
+      <div class="stat anim" style="--d:.55s"><strong>13</strong><span>verified opportunities</span></div>
+      <div class="stat anim" style="--d:.65s"><strong>14</strong><span>verified free courses</span></div>
+      <div class="stat anim" style="--d:.75s"><strong>6</strong><span>months, step by step</span></div>
+    </div>
+    <div class="hero-preview anim" style="--d:.85s">
+      <div class="preview-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="preview-title">Your roadmap · Cybersecurity Intern</span></div>
+      <div class="preview-row"><span>Month 1 — Foundations</span><span class="preview-pill">Networking · Linux</span></div>
+      <div class="preview-progress"><span style="width:38%"></span></div>
+      <p class="preview-note">Skill-gap: <strong>13% ready</strong> → the plan fills the other 87%, one month at a time.</p>
     </div>
   </section>
 
-  <section class="card" aria-labelledby="setupTitle">
+  <section class="steps" aria-label="How it works in three steps">
+    <div class="step anim"><span class="step-num">1</span><h3>Pick your role</h3><p>8 real roles, from Cybersecurity Intern to Prompt Engineer.</p></div>
+    <div class="step anim"><span class="step-num">2</span><h3>Get your 6-month plan</h3><p>Skills in order, one free course and one project a month.</p></div>
+    <div class="step anim"><span class="step-num">3</span><h3>Ask, build, apply</h3><p>Chat with the AI mentor, tick months off, apply before deadlines.</p></div>
+  </section>
+
+  <section class="card" id="setup" aria-labelledby="setupTitle">
+    <p class="card-eyebrow">START HERE</p>
     <h2 id="setupTitle">1 · Choose your target role</h2>
     <div id="roleGrid" class="role-grid" role="group" aria-label="Target roles"></div>
 
@@ -49,7 +83,7 @@
     <div id="skillGrid" class="chip-grid"></div>
 
     <div class="actions">
-      <button id="generateBtn" class="btn btn-primary" type="button" disabled>Pick a role first →</button>
+      <button id="generateBtn" class="btn btn-primary shine" type="button" disabled>Pick a role first →</button>
       <button id="resetBtn" class="btn btn-ghost" type="button">Start over</button>
     </div>
   </section>
@@ -57,6 +91,7 @@
   <section id="roadmapSection" class="card" hidden aria-labelledby="roadmapTitle">
     <div class="section-head">
       <div>
+        <p class="card-eyebrow">YOUR PLAN</p>
         <h2 id="roadmapTitle">Your roadmap</h2>
         <p id="roadmapMeta" class="muted"></p>
       </div>
@@ -69,21 +104,22 @@
     <div id="gapBox"></div>
     <h3>Your 6-month plan</h3>
     <p class="muted">Tick a month off when you finish its course and project. Your progress is saved on this device.</p>
-    <div id="monthsBox" class="months"></div>
+    <div id="monthsBox" class="months timeline"></div>
 
     <h3>Matched opportunities <span id="oppsCount" class="muted small"></span></h3>
     <p class="muted">Every opportunity below was verified on its official page. Deadlines are counted live from today — always re-check the official link before applying.</p>
     <div id="oppsBox" class="opps"></div>
   </section>
 
-  <section class="card" aria-labelledby="chatTitle">
-    <h2 id="chatTitle">AI Mentor Chat</h2>
-    <p id="chatStatus" class="chat-status off">Offline mentor mode — add your DeepSeek API key in Settings for full AI answers.</p>
+  <section class="card chat-card" id="chat" aria-labelledby="chatTitle">
+    <p class="card-eyebrow">AI MENTOR · POWERED BY DEEPSEEK</p>
+    <h2 id="chatTitle">Ask your AI mentor</h2>
+    <p id="chatStatus" class="chat-status off">Built-in mentor — add your DeepSeek key in config.js to enable live AI answers.</p>
     <div id="chatLog" class="chat-log" aria-live="polite"></div>
     <form id="chatForm" class="chat-form">
       <label class="sr-only" for="chatInput">Ask the AI mentor</label>
       <input id="chatInput" type="text" placeholder="Ask anything — e.g. how do I become a cybersecurity intern?" autocomplete="off">
-      <button class="btn btn-primary" type="submit">Send</button>
+      <button class="btn btn-primary" type="submit">Send →</button>
     </form>
     <div class="quick-asks">
       <button type="button" data-ask="What course should I do first?">What course should I do first?</button>
@@ -94,12 +130,13 @@
     <p class="muted small"><button id="chatClear" class="link-btn" type="button">Clear chat</button> · Your chat history stays on this device only.</p>
   </section>
 
-  <section class="card how">
+  <section class="card how" id="how">
+    <p class="card-eyebrow">UNDER THE HOOD</p>
     <h2>How it works</h2>
     <ol>
       <li><strong>Roadmap engine</strong> — your role's 6-month plan, ordered so each skill is learned before the project that needs it.</li>
       <li><strong>Skill-gap analysis</strong> — what you know vs what the role needs, with the missing skills highlighted.</li>
-      <li><strong>AI mentor</strong> — DeepSeek (deepseek-chat) answers career questions. Your key stays in your browser; with no key, the built-in mentor still answers from your roadmap.</li>
+      <li><strong>AI mentor</strong> — DeepSeek (deepseek-chat) answers career questions. Add your key in <code>js/config.js</code> (local only, never committed); with no key, the built-in mentor still answers from your roadmap.</li>
       <li><strong>Live opportunities</strong> — verified jobs, internships, scholarships and free courses, matched to your role, with deadline countdowns.</li>
       <li><strong>Progress &amp; streak</strong> — tick months off, keep a daily streak, all saved locally.</li>
     </ol>
@@ -107,26 +144,19 @@
   </section>
 </main>
 
-<footer class="wrap footer">
-  <p><strong>AI Career Copilot</strong> · Learn With Shivakarthik · Built by Pendyala Shivakarthik</p>
-  <p class="muted small">No login, no backend, no tracking. Your DeepSeek key (if you add one) stays in your browser. Opportunities and courses were verified on their official pages — always re-check before applying. <a href="https://www.linkedin.com/in/shivakarthik17/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/Shivakarthik1017" target="_blank" rel="noopener">GitHub</a></p>
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <a class="brand" href="#">
+      <span class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5 13.5 13.5 8.5 15.5 10.5 10.5Z"/></svg>
+      </span>
+      <span class="brand-text">AI Career <span>Copilot</span></span>
+    </a>
+    <p class="footer-tag">Don't just search for jobs. Become ready for them.</p>
+    <p class="muted small">Learn With Shivakarthik · Built by Pendyala Shivakarthik · No login, no backend, no tracking. Opportunities and courses were verified on their official pages — always re-check before applying.</p>
+    <p class="footer-links"><a href="https://www.linkedin.com/in/shivakarthik17/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/Shivakarthik1017" target="_blank" rel="noopener">GitHub</a> · <a href="https://wa.me/919640971021" target="_blank" rel="noopener">WhatsApp</a></p>
+  </div>
 </footer>
-
-<dialog id="settingsDialog" class="dialog">
-  <form method="dialog">
-    <h2>Settings — DeepSeek API key</h2>
-    <p>To get full AI answers, add your own DeepSeek API key. Get one at <a href="https://platform.deepseek.com/" target="_blank" rel="noopener">platform.deepseek.com</a> (free credits for new accounts).</p>
-    <p><strong>Your key stays in your browser</strong> (localStorage). It is sent only to <code>api.deepseek.com</code> when you chat — never to any other server, and never stored in the code or the repo.</p>
-    <label class="field-label" for="apiKeyInput">DeepSeek API key</label>
-    <input id="apiKeyInput" type="password" placeholder="sk-…" autocomplete="off">
-    <p id="keyNote" class="muted small"></p>
-    <div class="actions">
-      <button id="saveKeyBtn" class="btn btn-primary" type="button">Save key</button>
-      <button id="clearKeyBtn" class="btn btn-ghost" type="button">Remove key</button>
-      <button class="btn btn-ghost" type="submit">Close</button>
-    </div>
-  </form>
-</dialog>
 
 <script type="module" src="js/app.js"></script>
 </body>

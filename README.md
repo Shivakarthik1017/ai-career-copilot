@@ -15,16 +15,42 @@ with no login and no backend.
 | **Role picker** | 8 roles: Cybersecurity Intern, SDE Intern, Data Analyst, Web Developer, AI/ML Intern, UI/UX Designer, DevOps Intern, Prompt Engineer |
 | **6-month roadmap** | Skills in dependency order, one verified free course per month, one project per month, when to apply |
 | **Skill-gap analysis** | Known skills vs role requirements, % ready, missing skills highlighted |
-| **AI Mentor Chat** | DeepSeek (`deepseek-chat`) via a clean API client — or the built-in rule-based mentor when no key is set |
+| **AI Mentor Chat** | DeepSeek (`deepseek-chat`) via a clean API client — or the built-in rule-based mentor when no key is set. The key is loaded by dynamic import, so the live site works with no `js/config.js` present at all (it is never pushed) — the app never goes blank for a missing config. |
 | **Matched opportunities** | 13 verified jobs / internships / scholarships / free courses, matched to the role, with live deadline countdowns |
 | **Progress & streak** | Tick months off, daily streak, all saved in localStorage on the student's own device |
+
+## Design — light, branded, researched
+
+Rebuilt 19 Nov 2026 after research (see `research-design.md`):
+**roadmap.sh** (the roadmap IS the product — card grid + timeline),
+**Duolingo** (white cards, pill buttons, animated progress bars, streak),
+**Linear / Notion** (centred hero, tight-tracked headline, gradient text,
+whitespace, CSS-only keyframes) and **Perplexity** (cream paper canvas,
+white composer card, one teal accent used sparingly).
+
+- **Light only:** cream `#FFFBF6` background, white cards, ink `#1C1917`
+  text, teal `#0F766E` primary, orange `#F97316` accent (Learn With
+  Shivakarthik). No dark-only dashboard look.
+- **Brand:** gradient logo mark + "AI Career Copilot" wordmark, sticky
+  header with nav + streak chip, branded footer, tagline *"Don't just
+  search for jobs. Become ready for them."*
+- **Keyframes** (all in `styles.css`): `fadeUp` (staggered hero),
+  `blobDrift` + `floatY` (floating gradient blobs, logo), `gradientShift`
+  (headline), `shineSweep` (primary button), `popIn` (cards), `slideIn`
+  (chat messages), typing dots, `progressGrow` (bars), `drawLine`
+  (roadmap timeline), hover lift, pulsing streak ring. Animations off
+  under `prefers-reduced-motion`.
+- **Roadmap timeline:** vertical line with numbered month nodes, like
+  roadmap.sh; months animate in on scroll.
 
 ## Architecture
 
 ```
-index.html                  — shell: hero, role picker, roadmap, chat, settings
-styles.css                  — dark teal/orange brand, mobile-first, responsive
+index.html                  — shell: branded hero, role picker, roadmap, chat
+styles.css                  — LIGHT teal/orange brand, all keyframes, mobile-first
+research-design.md          — design research (sites read + patterns used)
 js/
+  config.js                 — LOCAL ONLY: DeepSeek key placeholder, gitignored
   app.js                    — bootstrap + state wiring only
   storage.js                — ALL persistence (localStorage, namespaced "acc:*")
   data/
@@ -58,24 +84,31 @@ so they are testable, loading / error / empty states everywhere.
 - Client: `js/api/llm.js`, `POST https://api.deepseek.com/chat/completions`,
   model `deepseek-chat`, system prompt = career mentor for Indian students,
   free-resources only, never invent salaries / deadlines / links.
-- **The API key is never hardcoded.** The student enters their own key in
-  Settings → it is stored only in `localStorage` on their own device, sent
-  only to `api.deepseek.com`, and can be removed at any time.
-- **Fallback:** with no key, or if the API call fails (bad key, network,
-  empty reply), the chat answers with a rule-based mentor built from the
-  student's own roadmap (role, missing skills, next step, verified courses).
-  Every reply is labelled `AI · DeepSeek` or `Built-in mentor`.
+- **The API key is never hardcoded and there is no key panel in the site.**
+  Karthik's key goes in `js/config.js` only:
+  `export const DEEPSEEK_API_KEY = "sk-…";` — that file is listed in
+  `.gitignore` and must never be committed or pushed. **Why:** a DeepSeek
+  key in a public repo can be copied by anyone and used to spend your
+  DeepSeek balance. (The GitHub repo currently live was pushed from the
+  previous build, which had no key in it — nothing secret was ever in it.)
+- **Fallback:** with the key empty, or if the API call fails (bad key,
+  network, empty reply), the chat answers with a rule-based mentor built
+  from the student's own roadmap (role, missing skills, next step, verified
+  courses). Every reply is labelled `AI · DeepSeek` or `Built-in mentor`,
+  and the chat shows: *"Built-in mentor — add your DeepSeek key in
+  config.js to enable live AI answers."*
 
 ## How to run
 
 No build step, no backend, no install.
 
 1. Open `index.html` in a browser — or deploy the folder to GitHub Pages
-   (Settings → Pages → Deploy from a branch → main → / root).
+   (GitHub → Settings → Pages → Deploy from a branch → main → / root).
 2. Pick a role, your year, tick the skills you know, click
    **Generate my roadmap**.
-3. (Optional) Settings → paste your DeepSeek API key for full AI answers.
-   Get a key at https://platform.deepseek.com/.
+3. (Optional, local only) Paste your DeepSeek API key in `js/config.js`
+   for full AI answers. Get a key at https://platform.deepseek.com/.
+   **Never commit `js/config.js`** — it is gitignored for that reason.
 
 > Note: ES modules need HTTP(S) — `file://` may block them in some
 > browsers. GitHub Pages (or any static host / `python3 -m http.server`)
